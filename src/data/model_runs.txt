@@ -1,0 +1,47 @@
+Model Runs:
+
+dataset_0:
+Basic Model for Set: dummy_mouse_enhancers_ensembl:
+Total Loss: 0.579737
+Accuracy: 66.82%
+F1 Score: 33.13
+
+Final Model for Set: dummy_mouse_enhancers_ensembl:
+Total Loss: 0.999781
+Accuracy: 50.64%
+F1 Score: 0.76
+
+dataset_1:
+Basic Model for Set: drosophila_enhancers_stark:
+Total Loss: 1.369164
+Accuracy: 49.94%
+F1 Score: 40.93
+
+Final Model for Set: drosophila_enhancers_stark:
+Total Loss: 0.892226
+Accuracy: 50.46%
+F1 Score: 0.82
+
+dataset_2:
+Basic Model for Set: human_enhancers_cohn:
+Total Loss: 0.792922
+Accuracy: 52.6%
+F1 Score: 40.45
+
+Final Model for Set: human_enhancers_cohn:
+Total Loss: 0.626275
+Accuracy: 65.09%
+F1 Score: 14.97
+
+dataset_3:
+Basic Model for Set: human_nontata_promoters:
+Total Loss: 0.581651
+Accuracy: 71.56%
+F1 Score: 23.3
+
+Final Model for Set: human_nontata_promoters:
+Total Loss: 0.606759
+Accuracy: 66.36%
+F1 Score: 20.33
+
+

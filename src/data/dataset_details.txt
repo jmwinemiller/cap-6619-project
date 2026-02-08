@@ -1,0 +1,72 @@
+# Mouse Enhancer regions vs Random background regions from GRCm38
+
+Dataset created with data downloaded from [Ensembl](https://www.ensembl.org/index.html) release 100.
+
+Positive sequences are mouse Enhancers from [VISTA Enhancer Browser](https://enhancer.lbl.gov/), but accessed via Ensembl. 
+Negative sequences are randomly generated from mouse genome GRCm38 to match lengths of positive sequences and to not overlap them.
+
+The VISTA Enhancer Browser is a central resource for experimentally validated human and mouse noncoding fragments with gene enhancer activity as assessed in transgenic mice. Most of these noncoding elements were selected for testing based on their extreme conservation in other vertebrates or epigenomic evidence (ChIP-Seq) of putative enhancer marks. 
+
+
+
+Dataset `dummy_mouse_enhancers_ensembl` has 2 classes: negative, positive.
+
+The length of genomic intervals ranges from 331 to 4776, with average 2369.5768595041322 and median 2381.0.
+
+Totally 1210 sequences have been found, 968 for training and 242 for testing.
+          train  test
+negative    484   121
+positive    484   121
+
+
+# Drosophila enhancers vs Random background regions from dm6
+
+Positive samples are Drosophila Enhancer regions from Stark Lab. These enhacers were experimentaly validated and we excluded the weak ones. Original coordinates refered to the dm3 assembly of the D. melanogaster genome. We used [pyliftover](https://github.com/konstantint/pyliftover) tool to map coordinates to the dm6 assembly.
+
+Negative sequences are randomly generated from drosophila genome dm6 to match lengths of positive sequences and to not overlap them.
+
+
+Dataset `drosophila_enhancers_stark` has 2 classes: negative, positive.
+
+The length of genomic intervals ranges from 236 to 3237, with average 2118.1238067688746 and median 2142.0.
+
+Totally 6914 sequences have been found, 5184 for training and 1730 for testing.
+          train  test
+negative   2592   865
+positive   2592   865
+
+
+# Human Enhancers
+
+Human enhancers as described in the paper [Enhancer Identification using Transfer and
+Adversarial Deep Learning of DNA Sequences](https://www.biorxiv.org/content/biorxiv/early/2018/02/14/264200.full.pdf). The paper talks about enhancers in multiple organisms but we have imported only human enhancers. More precisely, we are only using the folder "Human" of [Enhancers_vs_negative.tgz](http://www.cs.huji.ac.il/~tommy//enhancer_CNN/Enhancers_vs_negative.tgz) file referenced from the authors' [GitHub repository](https://github.com/cohnDikla/enhancer_CNN).
+
+The data have been imported with `seq2loc` utility. Totally, 13895 out of 14000 human enhancers and 13896 out of 140000 negative controls have been found in the human genome reference and included.
+
+
+Dataset `human_enhancers_cohn` has 2 classes: negative, positive.
+
+All lengths of genomic intervals equals 500.
+
+Totally 27791 sequences have been found, 20843 for training and 6948 for testing.
+          train  test
+negative  10422  3474
+positive  10421  3474
+
+
+# Human non-TATA promoters
+
+Human promoters as described in the paper [Recognition of prokaryotic and eukaryotic promoters using convolutional deep learning neural networks](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0171410#abstract0).
+
+The data have been imported with `seq2loc` utility. Totally, 19657 out of 19811 promoters and 16474 out of 27731 sequences have been found in the human genome reference and included.
+
+
+Dataset `human_nontata_promoters` has 2 classes: negative, positive.
+
+All lengths of genomic intervals equals 251.
+
+Totally 36131 sequences have been found, 27097 for training and 9034 for testing.
+          train  test
+negative  12355  4119
+positive  14742  4915
+
