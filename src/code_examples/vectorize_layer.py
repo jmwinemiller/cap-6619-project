@@ -1,4 +1,5 @@
-char_split_fn = lambda x: tf.strings.unicode_split(x, input_encoding="UTF-8")
+char_split_fn = lambda x: tf.strings.unicode_split(
+    x, input_encoding="UTF-8")
 vectorize_layer = keras.layers.TextVectorization(
     output_mode="int",
     split=char_split_fn,
