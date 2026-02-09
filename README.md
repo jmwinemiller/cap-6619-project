@@ -1,18 +1,27 @@
 # cap-6619-project
 Jordan Winemiller - Deep Learning Project
 ____
-<h2>Genomic Benchmarking for Sequence Classification and Exercise in 
-Reproducibility<h2>
+<h2>Deep Learning in Genomic Sequence Benchmarking: Implementing CNNs with a 
+Focus in Reproducibility<h2>
 
 ### Abstract
-As deep learning continues to become increasingly prevalent it is important
-to maintain the ability of repeatability. In biosciences, especially in the 
-field of genomics and handling the large datasets of genomic sequences; 
-benchmarking has became a very valuable tool for sequence classification for 
-repeatable experiments.This paper will examine a selection of genomic sequences
-for classification with the use of Convolutional Neural Networks with a 
-walkthrough the implementation details and drawbacks of using unmaintained code
-bases for repeatable experiments.
+As deep learning becomes increasingly prevalent in genomics, maintaining
+reproducibility in model development and evaluation is essential. In the
+biosciences, particularly for large genomic sequence datasets, benchmarking
+has become a valuable tool for enabling repeatable sequence classification
+experiments. This project uses publicly available genomic sequence benchmark
+datasets to implement convolutional neural networks *(CNNs)* for
+regulatory element classification and to examine the practical challenges of
+reproducing published workflows. We reimplement baseline CNN models using
+contemporary deep learning libraries, document the full training and evaluation
+pipeline, and compare our results with those reported in prior work. In doing
+so, we highlight common issues arising from unmaintained code bases, including
+dependency incompatibilities and undocumented preprocessing steps, and assess
+their impact on downstream performance and repeatability. The outcome is a
+transparent, reproducible set of scripts and guidelines intended to help
+students and researchers reliably apply deep learning to benchmark genomic
+sequence datasets.
+
 
 ### Project Links
 [*Colab Project Link*](
@@ -33,6 +42,7 @@ https://www.overleaf.com/read/mkskrfqrrztb#35502b)
 - Src: source code and examples for the project
   - Code Examples: Excerpts from the notebook code
   - Data: information around the data used in the project
+  - Diagrams: code for working with mermaid-py
   - Notebooks: all working code for the project
 ```
 Project-Root/
@@ -49,6 +59,7 @@ Project-Root/
 └── src
     ├── code_examples
     ├── data
+    ├── diagrams
     └── notebooks
 ```
 
