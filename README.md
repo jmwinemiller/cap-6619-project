@@ -24,6 +24,11 @@ sequence datasets.
 
 
 ### Project Links
+**Files At Root Directory:**
+JordanWinemiller-PP.pdf - PowerPoint in Latex with Beamer
+JordanWinemiller-Report.pdf - Journal Article in Latex
+CAP6619-JordanWinemiller-Presentation.mp4 - Presentation
+
 [*Colab Project Link*](
 https://colab.research.google.com/drive/1bx2C30r8Bm4BuFnv6Ugh0vlni72YpwoI)
 
