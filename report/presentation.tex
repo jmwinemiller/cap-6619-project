@@ -1,32 +1,80 @@
-\documentclass[9pt,twocolumn,twoside]{gsajnl}
-% Use the documentclass option 'lineno' to view line numbers
+%% Requires compilation with XeLatex or LuaLaTex
 
-\usepackage{epstopdf}
+% ---- PACKAGES AND THEMES
+%% Document Class
+\documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}
+\usetheme{Simple}
 
-\articletype{inv} % article type
-% {inv} Investigation
-% {gs} Genomic Selection
-% {goi} Genetics of Immunity
-% {gos} Genetics of Sex
-% {mp} Multiparentl Populations
+\usepackage{hyperref}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{natbib}
 
-\runningtitle{Deep Learning Benchmarks for Genomic Sequences}% For use in the footer
-\runningauthor{Jordan Winemiller \textit{2026}}
+%% Packages
+\usepackage{amsmath}
+\usepackage{graphicx} % Allows including images
+\usepackage{listings}
+\renewcommand\lstlistingname{}
+% ----
 
-\title{Deep Learning in Genomic Sequence Benchmarking: Implementing CNNs with a
-Focus in Reproducibility}
+\graphicspath{ {./model_images/}{./result_images} }
 
-\author[1,$\dagger$]{Jordan Winemiller}
 
-\affil[1]{Department of Electrical Engineering and Computer Science, Florida
-Atlantic Universtiy, Boca Raton, Florida, USA;}
+% ---- TITLE PAGE
+%%% Area needs improved
+\title{\Large Deep Learning in Genomic Sequence Benchmarking}
+\subtitle{Implementing CNNs with a Focus in Reproducibility}
+\author[Winemiller]
+{
+    Jordan Winemiller
+}
+\institute[FAU]
+{
+    Department of Electrical Engineering \& Computer Science \\
+    Florida Atlanta Univeristy
+}
+\date{\today}
+% ---- 
 
-% Use the \equalcontrib command to mark authors with equal
-% contributions, using the relevant superscript numbers
-%\equalcontrib{1}
-%\equalcontrib{2}
 
-\begin{abstract}
+% \AtBeginSection[]{
+%   \begin{frame}
+%   \vfill
+%   \centering
+%   \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+%     \usebeamerfont{title}\insertsectionhead\par%
+%   \end{beamercolorbox}
+%   \vfill
+%   \end{frame}
+% }
+
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\begin{frame}
+  % Print the title page as the first slide
+  \titlepage
+
+\end{frame}
+
+% \begin{frame}{Overview}
+%   % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+%   \tableofcontents
+% \end{frame}
+
+%------------------------------------------------
+\section{Introduction}
+%------------------------------------------------
+\begin{frame}{Abstract}
+\small
 As deep learning becomes increasingly prevalent in genomics, maintaining
 reproducibility in model development and evaluation is essential. In the
 biosciences, particularly for large genomic sequence datasets, benchmarking
@@ -34,33 +82,11 @@ has become a valuable tool for enabling repeatable sequence classification
 experiments. This project uses publicly available genomic sequence benchmark
 datasets to implement convolutional neural networks \textit{(CNNs)} for
 regulatory element classification and to examine the practical challenges of
-reproducing published workflows. We reimplement baseline CNN models using
-contemporary deep learning libraries, document the full training and evaluation
-pipeline, and compare our results with those reported in prior work. In doing
-so, we highlight common issues arising from unmaintained code bases, including
-dependency incompatibilities and undocumented preprocessing steps, and assess
-their impact on downstream performance and repeatability. The outcome is a
-transparent, reproducible set of scripts and guidelines intended to help
-students and researchers reliably apply deep learning to benchmark genomic
-sequence datasets.
-\end{abstract}
+reproducing published workflows.
+\end{frame}
 
-\keywords{Deep Learning; Convolutional Neural Networks; Reproducibility;
-Benchmarking; Computational Genomic}
-
-\dates{\rec{02 06, 2026} \acc{02 06, 2026}}
-
-\begin{document}
-
-\maketitle
-\thispagestyle{firststyle}
-%\slugnote
-%\firstpagefootnote
-\vspace{-13pt}% Only used for adjusting extra space in the left column of the first page
-
-\section{Introduction}
-\label{sec:intro}
-\lettrine[lines=2]{\color{color2}G}{enomic} sequence classification has become a
+\begin{frame}{Introduction}\small
+Genomic sequence classification has become a
 central task in computational biology, enabling researchers to characterize
 functional elements and regulatory patterns directly from DNA. Building on this
 momentum, the work presented here focuses on recreating previously proposed
@@ -69,13 +95,15 @@ Sequence Classification \citep{gb}, which was designed to lower the barrier for
 experimenting with genomic data. These benchmarks provide a structured setting
 for evaluating models while promoting transparency and comparability across
 studies.
+\end{frame}
 
+\begin{frame}{Target Audience}
 This work is intended for students and researchers in computational genomics,
 biostatistics, and computer science who seek practical, reproducible examples of
-applying deep learning to standardized genomic sequence benchmarks. 
+applying deep learning to standardized genomic sequence benchmarks.
+\end{frame}
 
-\subsection{Background}
-\label{sec:intro:bg}
+\begin{frame}{Background}
 Motivated by a background in biostatistics and computer science, this project
 aims to deepen practical experience with genomic datasets and to lay the
 foundation for future collaborations with faculty specializing in genomics.
@@ -88,16 +116,17 @@ challenges of achieving robust, repeatable results. By emphasizing
 reproducibility and clear experimental design, this project seeks to provide a
 useful reference for researchers and students who are beginning to work with
 deep learning methods in genomics.
-Implementation details and examples are availabe on \textit{GitHub \citep{ghgb}}
+Implementation details and examples are available on \textit{GitHub} \citep{ghgb}
 and \textit{
 \href{https://colab.research.google.com/drive/1bx2C30r8Bm4BuFnv6Ugh0vlni72YpwoI}
 {Google Colab}}.
+\end{frame}
 
+%------------------------------------------------
 \section{Materials and Methods}
-\label{sec:mm}
+%------------------------------------------------
 
-\subsection{Datasets}
-\label{sec:mm:data}
+\begin{frame}{Datasets}
 Genomic datasets are highly complex due to diverse data formats, pervasive
 missing values, variable sequence lengths, extreme scale, class imbalance in
 functional annotations, and batch effects from different sequencing technologies
@@ -105,8 +134,10 @@ or experimental conditions. The data formats available in the materials
 are stored as genomic coordinates. Some sequences were previously mapped using
 the \textit{seq2loc} Python package that specializes in mapping sequences for
 fasta files, human enhancers, and non-TATA promoters to genomic coordinates
-Browser Extensible Data \textit{(BED)} format.
+Browser Extensible Data \textit{(BED)} format. 
+\end{frame}
 
+\begin{frame}{Datasets}
 The selected datasets in table \ref{tbl:datasets} for benchmarking consist 
 of two (2) of non-uniform sequence and two (2) of uniform sequence length, 
 with one containing unbalanced classes. The first non-uniform set 
@@ -119,20 +150,20 @@ dataset for prototyping. The second non-uniform set
 The second set \textit{human\_nontata\_promoters} of non-TATA promoters 
 \citep{Umarov} has a class imbalance.
 
-The materials include additional datasets that are  available through the 
+\footnote{The materials include additional datasets that are  available through the 
 \textit{genomic\_benchmarks} \citep{ghgb} Python package by \textbf{ML-Bioinfo-CEITEC}
-, and \href{https://huggingface.co/}{Hugging Face}.
+, and \href{https://huggingface.co/}{Hugging Face}} 
+\end{frame}
 
-\begin{table*}[thp]
-\centering
-\caption{Description of selected datasets in genomic-benchmarks package}
-\begin{tableminipage}{\textwidth}
-\begin{tabularx}{\textwidth}{p{5cm}XXXXXX}
+\begin{frame}{Selected Datasets}
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{ |l c c c c c |}
     \hline
-    \bf{Name} & \bf{Number \newline of Sequences} & \bf{Number \newline of Classes} 
-    & \bf{Class \newline Ratio}\footnote{Ratio of the largest class} & 
-    \bf{Median \newline Length}\footnote{Median length for all sequences in the dataset}
-    & \bf{Sequence \newline Length Range}\footnote{Minimum and maximum length for all
+    \bf{Name} & \bf{Number of Sequences} & \bf{Number of Classes} 
+    & \bf{Class Ratio}\footnote{Ratio of the largest class} & 
+    \bf{Median Length}\footnote{Median length for all sequences in the dataset}
+    & \bf{Sequence Length Range}\footnote{Minimum and maximum length for all
     sequences in the dataset. *Note: if blank all sequence are the length} \\
     \hline
     dummy\_mouse\_enhancers\_ensembl & 1210 & 2 & 1.0 & 2381 & 331 to 4476 \\
@@ -140,13 +171,13 @@ The materials include additional datasets that are  available through the
     human\_enhancers\_cohn & 27791 & 2 & 1.0 & 500 & - \\
     human\_nontata\_promoters & 36131 & 2 & 1.2 & 251 & - \\
     \hline
-\end{tabularx}
+\end{tabular}
+}
 \label{tbl:datasets}
-\end{tableminipage}
-\end{table*}
+\end{center}
+\end{frame}
 
-\subsection{Statistical Methods}
-\label{sec:mm:sm}
+\begin{frame}{Statistical Methods}
 The classification metrics for predictions will look at \textit{True Positive,
 True Negative, False Positive, False Negative, Precision,} and \textit{Recall}
 \textit{(eq. \ref{eq:bg})}. These metrics will be used to measure the 
@@ -156,9 +187,10 @@ metric will be used for binary predictions. Otherwise, the $F_\beta\ Score$
 \textit{(eq. \ref{eq:fbeta})} metric will be used for any multi-class 
 classification. In addition to these metrics, $Cost\ Functions$ will be 
 monitored during model training.
+\end{frame}
 
-\subsubsection{Calculations}
-\label{sec:mm:sm:c}
+\begin{frame}{Statistical Methods: Calculations}
+\scriptsize
 \begin{equation}
 \begin{split}
 TP = True\ Positive \\
@@ -185,9 +217,10 @@ F_1\ Score = 2 * \frac{precision * recall}{precision + recall}
 F_\beta\ Score = \frac{(1+\beta^2) * TP}{(TP + FN) * \beta^2 + (TP + FP)}
 \label{eq:fbeta}    
 \end{equation}
+\end{frame}
 
-\subsection{Model Architectures}
-\label{sec:mm:ma}
+\begin{frame}{Model Architecture}
+\scriptsize
 Convolutional neural networks (CNNs) are powerful deep learning architectures
 that extract biologically meaningful features from genomic sequences with
 minimal hand-engineered input. These models excel at DNA feature extraction by
@@ -201,51 +234,20 @@ allows the network to focus on the most significant features and become less
 sensitive to small variations in the input sequence, making the model more
 robust. To normalize the inputs to the layers, a batch normalization layer
 is introduced before the next layer \citep{dna}.
+\end{frame}
 
+\begin{frame}{Model Architecture}
 The initial setup for this experiment is to implement two (2) deep convolutional 
-neural networks with the \textbf{Keras} package. The first network will consist
-of three (3) convolution units with a \textbf{Convolutional 1D Layer} for one (1)
-dimensional data, \textbf{Batch Normalization Layer}, and a 
-\textbf{Max Pooling 1D Layer} with a max pooling size of two (2). The fully connected 
-layer will consist of a \textbf{Dropout Layer} with \textbf{30\%} of the input units
-to be removed, a \textbf{Global Average Pooling 1D Layer} and a \textbf{Dense Layer}. 
-The three (3) convolutional layers will all have a \textbf{kernel size} of 8, 
-\textbf{filters} of 32, 16, and 4 in descending order, and implements the 
-\textit{Rectified Linear Units (ReLU)} \textit{(eq. \ref{eq:relu})} activation function. 
-\textit{Figure \ref{fig:first_cnn}} shows the details of the first CNN architecture.
-
-\begin{figure}[hp]
-\centering
-\includegraphics[height=12cm]{assets/figures/basic_cnn_architure}
-\caption{First Model Architecture}
-\label{fig:first_cnn}
-\end{figure}
-
-The second network will consist of three (3) convolution units with a 
-\textbf{Convolutional 1D Layer} for the one (1) dimensional data, 
-\textbf{Batch Normalization Layer}, and a \textbf{Max Pooling 1D Layer} with a max 
-pooling size of two (2) as the first CNN architecture. The fully connected layer will 
-consist of a \textbf{Flatten Layer} and two (2) \textbf{Dense Layers}. The three 
-(3) convolutional layers will all have a \textbf{kernel size} of 8, \textbf{filters}
-of 16, 8, and 4 in descending order, and use the \textit{ReLU} activation function. 
-The first of the dense layers will have 512 units and use the \textit{ReLU} activation
-function. \textit{Figure \ref{fig:second_cnn}} shows the details of the second CNN
-architecture.
-
-\begin{figure}[hp]
-\centering
-\includegraphics[height=12cm]{assets/figures/second_cnn_architure}
-\caption{Second Model Architecture}
-\label{fig:second_cnn}
-\end{figure}
+neural networks with the \textbf{Keras} package. 
 
 The last dense layer in both networks will have one (1) unit for binary classification 
 using the \textit{Sigmoid} \textit{(eq. \ref{eq:sigmoid})} activation function, and 
 the number of classes for the units for multi-class classification using the 
 \textit{Softmax} \textit{(eq. \ref{eq:softmax})} activation function.
+\end{frame}
 
-\subsubsection{Activation Functions}
-\label{sec:mm:ma:af}
+\begin{frame}{Model Architecture: Activation Functions}
+\scriptsize
 \begin{equation}    
 ReLU(x) = x^+ = max(0, x)= \frac{x + |x|}{2} = 
 \begin{cases}
@@ -264,9 +266,46 @@ Sigmoid = \sigma(x) = \frac{1}{1 + e^{-x}}
 Softmax = \sigma(z)_i = \frac{e^{z_i}}{\Sigma_{j=1}^{K}e^{z_j}}
 \label{eq:softmax}
 \end{equation}
+\end{frame}
 
-\subsection{Implementation}
-\label{sec:impl}
+\begin{frame}{Model Architecture - Basic}
+\scriptsize
+The first network will consist
+of three (3) convolution units with a \textbf{Convolutional 1D Layer} for one (1)
+dimensional data, \textbf{Batch Normalization Layer}, and a 
+\textbf{Max Pooling 1D Layer} with a max pooling size of two (2). The fully connected 
+layer will consist of a \textbf{Dropout Layer} with \textbf{30\%} of the input units
+to be removed, a \textbf{Global Average Pooling 1D Layer} and a \textbf{Dense Layer}. 
+The three (3) convolutional layers will all have a \textbf{kernel size} of 8, 
+\textbf{filters} of 32, 16, and 4 in descending order, and implements the 
+\textit{Rectified Linear Units (ReLU)} \textit{(eq. \ref{eq:relu})} activation function. 
+The figure shows the details of the first CNN architecture.
+\vfill
+\centering
+\includegraphics[scale=0.05]{assets/pp/assets/diagrams/first_cnn_architure_hort.png}
+\end{frame}
+
+\begin{frame}{Model Architecture - Final}
+\scriptsize
+The second network will consist of three (3) convolution units with a 
+\textbf{Convolutional 1D Layer} for the one (1) dimensional data, 
+\textbf{Batch Normalization Layer}, and a \textbf{Max Pooling 1D Layer} with a max 
+pooling size of two (2) as the first CNN architecture. The fully connected layer will 
+consist of a \textbf{Flatten Layer} and two (2) \textbf{Dense Layers}. The three 
+(3) convolutional layers will all have a \textbf{kernel size} of 8, \textbf{filters}
+of 16, 8, and 4 in descending order, and use the \textit{ReLU} activation function. 
+The first of the dense layers will have 512 units and use the \textit{ReLU} activation
+function. The figure shows the details of the second CNN
+architecture.
+\vfill
+
+\centering
+\includegraphics[scale=0.05]{assets/pp/assets/diagrams/second_cnn_architure_hort.png}
+\end{frame}
+
+
+\begin{frame}{Implementation}
+\scriptsize
 The \textbf{genomic-benchmarks} Python package from \textbf{ML-Bioinfo-CEITEC} is a 
 GitHub repository\citep{ghgb} that collects benchmarks for genomic
 sequence classification. The repository includes the datasets, source code, 
@@ -274,127 +313,122 @@ helper functions, and examples. The repository is also available via \textit{PIP
 installation. The original implementation of the datasets and example code do not 
 use a validation set. \textit{Figure \ref{fig:dummy}} shows the initial information
 prototype dataset. \textit{Figure \ref{fig:dataset}} shows the type of the 
-training dataset. 
+training dataset.  
 
-\begin{figure}[hp]
-\centering
-\includegraphics[width=0.4\textwidth]{assets/figures/dummy_data}
-\caption{Initial Prototype Dataset}
-\label{fig:dummy}
-\end{figure}
+\vfill
+    
+\begin{columns}[c]
+    \begin{column}{.5\textwidth}
+        \begin{figure}
+        \centering
+        \includegraphics[width=0.4\textwidth]{assets/figures/dummy_data}
+        \caption{Initial Prototype Dataset}
+`       \label{fig:dummy}
+        \end{figure}
+    \end{column}    
 
-\begin{figure}[hp]
-\centering
-\includegraphics[width=0.4\textwidth]{assets/figures/dataset_type}
-\caption{Dataset Type}
-\label{fig:dataset}
-\end{figure}
+    \begin{column}{.5\textwidth}
+        \begin{figure}
+        \centering
+        \includegraphics[width=0.4\textwidth]{assets/figures/dataset_type}
+        \caption{Dataset Type}
+        \label{fig:dataset}
+        \end{figure}
+    \end{column}
+\end{columns}
+\end{frame}
 
-The list of datasets available from \textit{genomic-benchmarks} Python package
-can be found using \textit{code \ref{cd:datasets}}.
+\begin{frame}{Impl: Dependencies}
+\begin{itemize}
+    \item PIP Install
+        \begin{itemize}
+            \item genomic\_benchmarks
+            \item mermaid-py
+            \item jupyter\_capture\_output
+        \end{itemize}
+    \item Imports
+        \begin{itemize}
+            \item pathlib
+            \item os
+            \item keras
+            \begin{itemize}
+                \item backend
+                \item layers
+                \item losses
+                \item models
+                \item metrics
+            \end{itemize}
+            \item matplotlib
+            \item numpy
+            \item tensorflow
+        \end{itemize}
+\end{itemize}
+\end{frame}
 
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={List the Available Datasets},
-    label={cd:datasets},
-    basicstyle=\scriptsize,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/datasets.py}
-
-There are other dependencies that are needed to use the helper functions and
-models (This is covered in the next section on \textit{Complications}). The 
-datasets are available as built-in data classes for \textit{TensorFlow} and 
-\textit{Torch}. The text files were loaded and processed in a batch size of 64
-into a TensorFlow PreFetchDataSet. The network architecture figures utilized
-the python package \textit{mermaid-py}. The \textit{code \ref{cd:pip}} shows the pip 
-installation, and \textit{code \ref{cd:imports}} shows the imports and setup.  
-
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={PIP installation},
-    label={cd:pip},
-    basicstyle=\scriptsize,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/pip_install.py}
-
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={Setup and Imports},
-    label={cd:imports},
-    basicstyle=\scriptsize,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/setup_and_imports.py}
-
+\begin{frame}{Impl: Dataset Download}
+\scriptsize
 Downloading the datasets from the \textit{genomic-benchmarks} Python 
 package creates a hidden folder in your working directory with the 
-setup in \textit{code \ref{cd:ds_download}} will only download a 
+setup in code will only download a 
 non-existent dataset. The info command will produce information 
 about the dataset from the \textit{metadata.yaml} file that 
 accompanies each dataset.
 
+\centering
 \lstinputlisting[
     language=Python,
-    % float=,
-    caption={Dataset Download},
-    label={cd:ds_download},
-    basicstyle=\scriptsize,
+    basicstyle=\tiny,
     numbers=none,
     showstringspaces=false,
 ]{assets/code_examples/download_datasets.py}
+    
+\end{frame}
 
+\begin{frame}{Impl: Transforming the Data}
 The dataset needed to be transformed using a \textit{one-hot} encoding for
 each class. This process vectorized the text. The vectorization process 
 \textit{codes \ref{cd:vec_layer}} and \textit{\ref{cd:vec_text}} show the 
 methods used to facilitate the data transformation.  
 
+\begin{columns}
+\begin{column}{.5\textwidth}
 \lstinputlisting[
     language=Python,
     % float=,
     caption={Vectorization Layer},
     label={cd:vec_layer},
-    basicstyle=\scriptsize,
+    basicstyle=\tiny,
     numbers=none,
     showstringspaces=false,
 ]{assets/code_examples/vectorize_layer.py}
+\end{column}    
 
-\newline \break
+\begin{column}{.5\textwidth}
 \lstinputlisting[
     language=Python,
     % float=,
     caption={Vectorize Text},
     label={cd:vec_text},
-    basicstyle=\scriptsize,
+    basicstyle=\tiny,
     numbers=none,
     showstringspaces=false,
-]{assets/code_examples/vectorize_text.py}
+]{assets/code_examples/vectorize_text.py} 
+\end{column}    
+\end{columns}
+\end{frame}
 
+\begin{frame}{Impl: Metrics}
 Providing transparent evidence of the model's performance is the cornerstone
-of benchmarking. \textit{Code \ref{cd:plots}} describes the implementation 
-for capturing these important metrics and providing visual evidence of the
-CNN model for training and evaluation and new unseen test data. The graphs
-produced will contain the accuracy, cost functions 
+of benchmarking. The implementation for capturing these important metrics and
+providing visual evidence of the CNN model for training and evaluation and 
+new unseen test data. The graphs produced will contain the accuracy, cost functions 
 \textit{(i.e., learning curve)}, and $F_1\ score$ for training. The 
 method also provides metrics for the models evaluation of the testing
 dataset.
+    
+\end{frame}
 
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={Displaying Plots and Metrics},
-    label={cd:plots},
-    basicstyle=\scriptsize,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/display_metrics.py}
-
-\subsection{Complications}
-\label{sec:comp}
+\begin{frame}{Complications}
 There were complications due to when \textit{genomic-benchmarks} Python package
 was design and built. The authors built the source code with the helper functions
 to work with up to \textit{python3.10}. There are a few dependencies in
@@ -403,7 +437,9 @@ $F_1\ score$ due to the \textit{Keras} package version (which is addressed in th
 next section), \textit{torchtext} for tokenization methods in the source code,
 which does not have a compatible \textit{torch} version that can be installed in
 \textit{Google Colab}.
+\end{frame}
 
+\begin{frame}{Complications Cont.}
 There were other complications due to the data being not 
 uniform in length, adding complexity of using native \textit{numpy} 
 arrays. There was another issue with how the \textit{one-hot} encoding source 
@@ -411,29 +447,38 @@ code was working and being utilized in the model (which is addressed in the next
 section). \textit{Figures \ref{fig:tensorflow}, \ref{fig:torch}, \ref{fig:numpy}}
 show the complications.
 
+\vfill
+
+\begin{columns}
+    \begin{column}{.32\textwidth}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.4\textwidth]{assets/figures/tensorflow_issue}
 \caption{Tensorflow-addons Package Issue}
 \label{fig:tensorflow}
 \end{figure}
-
+    \end{column}
+    \begin{column}{.32\textwidth}
 \begin{figure}[hp]
 \centering
 \includegraphics[width=0.4\textwidth]{assets/figures/torch_reinstall_error}
 \caption{Torchtext Package Issue}
 \label{fig:torch}
 \end{figure}
-
+    \end{column}
+    \begin{column}{.32\textwidth}
 \begin{figure}[hp]
 \centering
 \includegraphics[width=0.4\textwidth]{assets/figures/numpy_issue}
 \caption{Numpy Data Shape Issue}
 \label{fig:numpy}
 \end{figure}
+    \end{column}
+\end{columns}
+\end{frame}
 
-\subsection{Mitigation Attempts}
-\label{sec:mig}
+
+\begin{frame}{Mitigation Attempts}
 \textbf{Attempted:} Working through the source code and complications, I decided to
 lower the python version to the lowest available in the google Colab 
 environment. Initially, there was an attempt to switch the version shown in 
@@ -447,8 +492,10 @@ environment. Initially, there was an attempt to switch the version shown in
 \end{figure}
 
 This was abandoned due to time constraints. After this change was made, 
-the first model was able to produce results with minimal additional workarounds.   
+the first model was able to produce results with minimal additional workarounds.    
+\end{frame}
 
+\begin{frame}{Mitigation Attempts Cont.}
 \textbf{Fixed:} The second model required additional new layers to be added to 
 the architecture to handle the output dimension from the last 
 \textbf{Convolutional Layer} to the \textbf{Flatten Layer}. 
@@ -458,66 +505,41 @@ the second model.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=18cm]{assets/figures/second_cnn_architure_update}
+\includegraphics[scale=0.05]{assets/pp/assets/diagrams/second_cnn_architure_update_hort.png}
 \caption{Second Model Architecture Update}
 \label{fig:second_cnn_update}
-\end{figure}
+\end{figure}    
+\end{frame}
 
+\begin{frame}{Mitigation Attempts Cont.}
 \textbf{Fixed:} The $F_1\ Score$ that is implemented in the 
 \textit{genomic-benchmarks} Python package requires a version of \textit{Keras}
 that is not supported in the available version of \textit{Google Colab}. A Python
-function \textit{code \ref{cd:f1}} was written for the implementation of the 
+function was written for the implementation of the 
 $F_1\ Score$ metric for the evaluation of the model.
+\end{frame}
 
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={$F_1\ Score$ Calculation},
-    label={cd:f1},
-    basicstyle=\tiny,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/f1_score.py}
-
+%------------------------------------------------
 \section{Results}
-\label{sec:result}
+%------------------------------------------------
 
-\textbf{Utility Code}
-
+\begin{frame}{Results: Utility Code}
+\small
 To facilitate the execution for training and testing the models 
 on multiple datasets; utility code was built to allow for a
-repeatable setup. \textit{Code \ref{cd:update}} allows for 
-an update for training and test datasets in the notebook. This
-was required because the variables existing in a global scope.
+repeatable setup. This allows for an update for training and test
+datasets in the notebook. This was required because the variables
+existing in a global scope.
 
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={Update the Dataset Selection.},
-    label={cd:update},
-    basicstyle=\tiny,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/update_train_test_sets.py}
-
-The models were trained and evaluated using the method
-\textit{code \ref{cd:te}} to populate a dictionary with model
-metrics after the models were compiled, trained and evaluated.
-
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={Train and Evaluate Models.},
-    label={cd:te},
-    basicstyle=\tiny,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/training_model.py}
+The models were trained and evaluated using the method to populate a 
+dictionary with model metrics after the models were compiled,
+trained and evaluated.
 
 Repeating the setup with the above utilities for training and 
 evaluation of the models on each dataset was reduced to the
 \textit{code \ref{cd:runner}}.
 
+\centering
 \lstinputlisting[
     language=Python,
     % float=,
@@ -527,162 +549,131 @@ evaluation of the models on each dataset was reduced to the
     numbers=none,
     showstringspaces=false,
 ]{assets/code_examples/example_model_run.py}
+\end{frame}
 
-\subsection{Models}
+\begin{frame}{Results: Models}
 \label{sec:result:mod}
 The models for these experiments were built with the
 \textit{Keras} Python package using the architectures mentioned 
-in the model architecture \ref{sec:mm:ma}. All of the experiments
-ran for 10 epochs. The baseline model was built with 
-\textit{code \ref{cd:m1}}, and the final model was compiled
-with the \textit{code \ref{cd:m2}}.
+in the model architecture. All of the experiments
+ran for 10 epochs. The baseline and final model were built 
+using training and evaluation method in the paper.
+\end{frame}
 
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={Baseline Model.},
-    label={cd:m1},
-    basicstyle=\tiny,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/initial_model.py}
-
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={Final Model.},
-    label={cd:m2},
-    basicstyle=\tiny,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/final_model.py}
-
-\subsection{Dataset: Dummy Mouse Enhancers Ensembl}
-\label{sec:result:r1}
+\begin{frame}{Results: Models - Dummy Mouse Enhancers Enseml}
+\scriptsize
 The models were trained on 968 sequences for 10 epochs. Then,
-tested on 242 sequences. The results of the training are shown 
-in \textit{figure \ref{fig:m0}}. The 
-\textbf{total loss, accuracy, and $F_1$ score} evaluation metrics
-are shown in table \ref{tbl:m0}. 
-\textit{Note: this is dataset index 0}.
+tested on 242 sequences. The results of the training are shown
+figure below.
+
+The \textbf{total loss, accuracy, and $F_1$ score} evaluation metrics
+are shown in table.  \textit{Note: this is dataset index 0}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=16cm]{assets/model_runs/model_0.png}
-\caption{Model Training for dummy\_mouse\_enhancers\_ensembl}
-\label{fig:m0}
+\includegraphics[scale=0.25]{assets/pp/assets/model_runs/model_0_pp.png}
 \end{figure}
 
-\begin{table}[H]
-\caption{Evaluation Metrics for dummy\_mouse\_enhancers\_ensembl Dataset}
-\begin{tableminipage}{0.45\textwidth}
-\begin{tabularx}{\textwidth}{XXXX}
+\begin{center}
+\resizebox{0.3\textwidth}{!}{%    
+\begin{tabular}{| l c c c |}
     \hline
     \bf{Model Name} & \bf{Total Loss} & \bf{Accuracy} & \bf{$F_1$ Score} \\
     \hline
     \bf{Basic} & 0.5797 & 66.82\% & 33.13 \\
     \bf{Final} & 0.9998 & 50.64\% & 0.76 \\
     \hline
-\end{tabularx}
-\label{tbl:m0}
-\end{tableminipage}
-\end{table}
+\end{tabular}
+}
+\end{center}
+\end{frame}
 
-\subsection{Dataset: Drosophila Enhancers Stark}
-\label{sec:result:r2}
+
+\begin{frame}{Results: Models - Drosophila Enhancers Stark}
+\scriptsize
 The models were trained on 5,184 sequences for 10 epochs. Then,
-tested on 1,730 sequences. The results of the training are shown 
-in \textit{figure \ref{fig:m1}}. The 
-\textbf{total loss, accuracy, and $F_1$ score} evaluation metrics
-are shown in table \ref{tbl:m1}. 
-\textit{Note: this is dataset index 1}.
+tested on 1,730 sequences. The results of the training are shown
+figure below.
+
+The \textbf{total loss, accuracy, and $F_1$ score} evaluation metrics
+are shown in table.  \textit{Note: this is dataset index 1}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=16cm]{assets/model_runs/model_1.png}
-\caption{Model Training for drosophila\_enhancers\_stark Dataset}
-\label{fig:m1}
+\includegraphics[scale=0.25]{assets/pp/assets/model_runs/model_1_pp.png}
 \end{figure}
 
-\begin{table}[H]
-\caption{Evaluation Metrics for drosophila\_enhancers\_stark}
-\begin{tableminipage}{0.45\textwidth}
-\begin{tabularx}{\textwidth}{XXXX}
+\begin{center}
+\resizebox{0.3\textwidth}{!}{%    
+\begin{tabular}{| l c c c |}
     \hline
     \bf{Model Name} & \bf{Total Loss} & \bf{Accuracy} & \bf{$F_1$ Score} \\
     \hline
     \bf{Basic} & 1.3692 & 49.94\% & 40.93 \\
     \bf{Final} & 0.8922 & 50.46\% & 0.82 \\
     \hline
-\end{tabularx}
-\label{tbl:m1}
-\end{tableminipage}
-\end{table}
+\end{tabular}
+}
+\end{center}
+\end{frame}
 
-\subsection{Dataset: Human Enhancers Cohn}
-\label{sec:result:r3}
+\begin{frame}{Results: Models - Human Enhancers Cohn}
+\scriptsize
 The models were trained on 20,843 sequences for 10 epochs. Then,
-tested on 6,948 sequences. The results of the training are shown 
-in \textit{figure \ref{fig:m2}}. The 
-\textbf{total loss, accuracy, and $F_1$ score} evaluation metrics
-are shown in table \ref{tbl:m2}. 
-\textit{Note: this is dataset index 2}.
+tested on 6,948 sequences. The results of the training are shown
+figure below.
+
+The \textbf{total loss, accuracy, and $F_1$ score} evaluation metrics
+are shown in table.  \textit{Note: this is dataset index 2}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=16cm]{assets/model_runs/model_2.png}
-\caption{Model Training for human\_enhancers\_cohn Dataset}
-\label{fig:m2}
+\includegraphics[scale=0.25]{assets/pp/assets/model_runs/model_2_pp.png}
 \end{figure}
 
-\begin{table}[H]
-\caption{Evaluation Metrics for human\_enhancers\_cohn}
-\begin{tableminipage}{0.45\textwidth}
-\begin{tabularx}{\textwidth}{XXXX}
+\begin{center}
+\resizebox{0.3\textwidth}{!}{%    
+\begin{tabular}{| l c c c |}
     \hline
     \bf{Model Name} & \bf{Total Loss} & \bf{Accuracy} & \bf{$F_1$ Score} \\
     \hline
     \bf{Basic} & 0.7929 & 52.60\% & 40.45 \\
     \bf{Final} & 0.6263 & 65.09\% & 14.97 \\
     \hline
-\end{tabularx}
-\label{tbl:m2}
-\end{tableminipage}
-\end{table}
+\end{tabular}
+}
+\end{center}
+\end{frame}
 
-\subsection{Dataset: Human Non-TATA Promoters}
-\label{sec:result:r4}
+\begin{frame}{Results: Models - Human Non-TATA Promoters}
+\scriptsize
 The models were trained on 27,097 sequences for 10 epochs. Then,
-tested on 9,034 sequences. The results of the training are shown 
-in \textit{figure \ref{fig:m3}}. The 
-\textbf{total loss, accuracy, and $F_1$ score} evaluation metrics
-are shown in table \ref{tbl:m3}. 
-\textit{Note: this is dataset index 3}.
+tested on 9,034 sequences. The results of the training are shown
+figure below.
+
+The \textbf{total loss, accuracy, and $F_1$ score} evaluation metrics
+are shown in table.  \textit{Note: this is dataset index 3}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=16cm]{assets/model_runs/model_3.png}
-\caption{Model Training for human\_nontata\_promoters Dataset}
-\label{fig:m3}
+\includegraphics[scale=0.25]{assets/pp/assets/model_runs/model_3_pp.png}
 \end{figure}
 
-\begin{table}[H]
-\caption{Evaluation Metrics for human\_nontata\_promoters}
-\begin{tableminipage}{0.45\textwidth}
-\begin{tabularx}{\textwidth}{XXXX}
+\begin{center}
+\resizebox{0.3\textwidth}{!}{%    
+\begin{tabular}{| l c c c |}
     \hline
     \bf{Model Name} & \bf{Total Loss} & \bf{Accuracy} & \bf{$F_1$ Score} \\
     \hline
     \bf{Basic} & 0.5817 & 71.56\% & 23.30 \\
     \bf{Final} & 0.6068 & 66.36\% & 20.33 \\
     \hline
-\end{tabularx}
-\label{tbl:m3}
-\end{tableminipage}
-\end{table}
+\end{tabular}
+}
+\end{center}
+\end{frame}
 
-\subsection{Benchmark Analysis}
-\label{sec:result:an}
+\begin{frame}{Results: Benchmark Analysis}
 In benchmarking the models on the selected datasets, the models showed
 difficulties in obtaining any significant training loss or accuracy. 
 Upon evaluation of the models, the accuracy appears to predict classes
@@ -693,8 +684,13 @@ due in part to the additional \textit{global average pooling} layer
 that had to be added to the model architecture. The original final model
 architecture was compiled using \textit{Pytorch}, but that should 
 not account for the amount of lack of performance.
+\end{frame}
 
-\section{Improvements}
+%------------------------------------------------
+\section{Conclusions}
+%------------------------------------------------
+
+\begin{frame}{Future Improvements}
 There are a few improvements beyond the updates required for newer versions
 of the packages used in the experiments. Future experiments would benefit 
 from the addition of validation sets to test for overfitting during training.
@@ -706,8 +702,9 @@ models.
 
 Other improvements consists of testing different model architectures, 
 using data augmentation, and handling of sparse data.
+\end{frame}
 
-\section{Conclusions}
+\begin{frame}{Conclusions}
 Although initial attempts to reproduce the previous results with the
 deep learning models did not produce the expected results, mainly due to
 the implementation obstacles. The undertaking of a project to become 
@@ -715,53 +712,37 @@ familiar with genomic data and developing Convolutional Neural Networks
 through updating and working through the proposed architectures;
 there is an excitement to continue exploring more deep learning 
 opportunities in the field of genomics.
+\end{frame}
 
-\section{Miscellaneous Code}
-\textbf{Additional code used to create the report:}
+%------------------------------------------------
+\section{Additional}
+%------------------------------------------------
 
-The diagrams use \textit{mermaid-py} and 
-\textit{code \ref{cd:mermaid}} shows an example use case for
-this project.
+\begin{frame}{Miscellaneous}
+\large
+\textbf{Code used to create the report is in GitHub \citep{gh}}
+The diagrams use \textit{mermaid-py} for this project
+\end{frame}
 
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={Mermaid Diagram Example},
-    label={cd:mermaid},
-    basicstyle=\tiny,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/mermaid_example.py}
 
-Verification of the length of the dataset during exploratory data analysis
-and data cleansing is critical in work with genomic data. 
-\textit{Code \ref{cd:check_len}} shows the implementation of this method.
-
-\lstinputlisting[
-    language=Python,
-    % float=,
-    caption={Checking the Length Method},
-    label={cd:check_len},
-    basicstyle=\tiny,
-    numbers=none,
-    showstringspaces=false,
-]{assets/code_examples/check_lengths.py}
-
-Also, the package \textit{listings} package was added and renamed to 
-display \textbf{Code} instead of \textbf{Listing} using the 
-\textit{renewcommand} in the class file.
-
-\section{Data availability}
+\begin{frame}{Data Availability}
+\large
 All datasets are available for GitHub \citep{ghgb}, and all code covered in this 
 article can be found at \citep{gh} or at \href{https://colab.research.google.com/drive/1bx2C30r8Bm4BuFnv6Ugh0vlni72YpwoI}
-{Google Colab}.
+{Google Colab}. 
+\end{frame}
 
-\section{Acknowledgments}
-Not applicable.
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+    \bibliographystyle{abbrv}
+    \bibliography{bibliography}
+\end{frame}
+%------------------------------------------------
 
-\section{Conflicts of interest}
-There are no conflicts of interest.
+\begingroup
+\setbeamertemplate{footline}{} % remove footline
+\endgroup
 
-\bibliography{bibliography}
+%----------------------------------------------------------------------------------------
 
-\end{document} 
+\end{document}
